@@ -19,6 +19,11 @@ RUN apt-get update && \
     gcc && \
     rm -rf /var/lib/apt/lists/*
 
+RUN apt-get install \
+    rocm-libs \
+    miopen-hip \
+    cxlactivitylogger \
+    rccl
 # Julia dependencies
 # install Julia packages in /opt/julia instead of $HOME
 ENV JULIA_DEPOT_PATH=/opt/julia
@@ -85,3 +90,6 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     chmod -R go+rx $CONDA_DIR/share/jupyter && \
     rm -rf $HOME/.local && \
     fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter
+
+RUN pip install tensorflow-rocm==1.14.5
+RUN pip install stellargraph==0.8
